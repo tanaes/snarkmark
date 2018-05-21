@@ -168,9 +168,9 @@ rule taxonomy_centrifuge:
 rule taxonomy:
     input:
         expand(taxonomy_dir + "{sample}/centrifuge/{sample}.report.txt",
-               sample=samples)
+               sample=samples),
         expand(taxonomy_dir + "{sample}/kraken/{sample}.profile.txt",
-               sample=samples)
+               sample=samples),
         expand(taxonomy_dir + "{sample}/metaphlan2/{sample}.profile.txt",
                sample=samples)
 

@@ -9,7 +9,7 @@ rule assemble_megahit:
         assemble_dir + "{sample}/megahit/{sample}.contigs.fa"
     params:
         mem_b = 120000000000,
-        out_dir = os.path.dirname(output[0]),
+        out_dir = assemble_dir + "{sample}/megahit",
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
                                                  'tmp_%s' % wildcards.sample)
     threads:
@@ -44,7 +44,7 @@ rule assemble_metaspades:
         "../envs/env_assemble.yaml"
     params:
         mem=240,
-        out_dir = os.path.dirname(output[0]),
+        out_dir = assemble_dir + "{sample}/metaspades",
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
                                                  'tmp_%s' % wildcards.sample)
     threads:

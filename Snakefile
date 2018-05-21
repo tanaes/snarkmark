@@ -13,7 +13,7 @@ include: "rules/assemble.rule"
 # import rules
 rule all:
     input: 
-        rules.qc.input
-        rules.taxonomy.input
-        rules.function.input
+        rules.qc.input,
+        rules.taxonomy.input,
+        rules.function.input,
         rules.assemble.input
