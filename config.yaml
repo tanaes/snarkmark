@@ -1,6 +1,6 @@
-tmp_dir_root: /Users/jonsanders/Development/git_sw/snarkmark
+tmp_dir_root: /panfs/panfs1.ucsd.edu/panscratch/jgsanders 
 params:
-  db_dir: /Users/jonsanders/Development/git_sw/snarkmark/test_data/test_dbs
+  db_dir: ~/git_sw/snarkmark/test_data/test_dbs
   abundance_samples:
   assemblers:
   - megahit
