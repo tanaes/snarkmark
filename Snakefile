@@ -12,18 +12,14 @@ include: "rules/assemble.rule"
 include: "rules/report.rule"
 
 # import rules
+rule all:
+    input: 
+        rules.processing.input,
+        rules.report_benchmark_summary.output
+
 rule processing:
     input:
         rules.qc.input,
         rules.taxonomy.input,
         rules.function.input,
         rules.assemble.input
-
-rule report:
-    input:
-        rules.report_benchmark_summary.output
-
-rule all:
-    input:
-        rules.processing.input,
-        rules.report.input
