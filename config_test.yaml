@@ -27,7 +27,7 @@ params:
     levels: phylum,genus,species
     map: no
   kraken:
-    db: genome/rep82/kraken
+    db: kraken
     # Bracken kmer distribution file
     kmers: genome/rep82/bracken/75mers_distr.txt
     # taxonomic ranks (kingdom to species) to reestimate abundance using Bracken
@@ -35,15 +35,15 @@ params:
     # whether to keep original mapping file
     map: no
   centrifuge:
-    db: genome/rep82/centrifuge/rep82
+    db: centrifuge/5min
     # taxonomic ranks (kingdom to species) to reestimate abundance using Bracken
     levels: phylum,genus,species
     # whether to keep original mapping file
     map: yes
   bracken:
-    kmers: genome/rep82/bracken/75mers_distr.txt
+    kmers: bracken/75mers_distr.txt
   shogun:
-    db: genome/rep82/shogun
+    db: shogun
     # alignment algorithm: bowtie2, burst and utree
     aligner: utree
     # taxonomic ranks (kingdom to strain) to redistribute reads
