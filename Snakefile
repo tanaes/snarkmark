@@ -6,6 +6,9 @@ samples = config["samples"]
 # import rules
 include: "rules/folders.rule"
 include: "rules/qc.rule"
+include: "rules/taxonomy.rule"
+include: "rules/function.rule"
+include: "rules/assemble.rule"
 
 # import rules
 rule all:
@@ -13,3 +16,4 @@ rule all:
         rules.qc.input
         rules.taxonomy.input
         rules.function.input
+        rules.assemble.input
