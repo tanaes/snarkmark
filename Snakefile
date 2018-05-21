@@ -11,3 +11,4 @@ include: "rules/qc.rule"
 rule all:
     input: 
         rules.qc.input
+        rules.taxonomy.input
