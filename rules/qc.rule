@@ -21,6 +21,54 @@ rule qc_copy_files:
         cp {input.reverse} {output.reverse}
         """
 
+rule raw_per_sample_fastqc: 
+    """
+    Makes fastqc reports for each individual input file.
+    """
+    input:
+        forward = raw_dir + "{sample}/combined_reads/{sample}.R1.fastq.gz",
+        reverse = raw_dir + "{sample}/combined_reads/{sample}.R2.fastq.gz"
+    output:
+        html = raw_dir + "{sample}/fastqc_per_sample/{sample}.R1_fastqc.html",
+        zip = raw_dir + "{sample}/fastqc_per_sample/{sample}.R2_fastqc.zip"
+    threads:
+        4
+    benchmark:
+        "benchmarks/qc/raw_per_sample_fastqc.sample_{sample}.txt"
+    params:
+        out_dir = raw_dir + "{sample}/fastqc_per_sample"
+    log:
+        raw_dir + "logs/raw_per_sample_fastqc.sample_{sample}.log"
+    conda:
+        "../envs/env_qc.yaml"
+    shell:
+        """
+        fastqc --threads {threads} --outdir {params.out_dir} {input.forward} {input.reverse} 2> {log} 1>&2
+        """
+
+rule raw_per_sample_multiqc:
+    """
+    Runs multiqc for combined input files.
+    """
+    input:
+        expand(raw_dir + "{sample}/fastqc_per_sample/{sample}.R2_fastqc.zip", sample=config['samples']),
+    output:
+        raw_dir + "multiQC_per_sample/multiqc_data/multiqc_general_stats.txt"
+    threads:
+        4
+    benchmark:
+        "benchmarks/qc/raw_per_sample_multiqc.sample_{sample}.txt"
+    params:
+        out_dir = raw_dir + "multiQC_per_sample"
+    log:
+        raw_dir + "logs/raw_per_sample_multiqc.log"
+    conda:
+        "../envs/env_qc.yaml"
+    shell:
+        """
+        multiqc -f -o {params.out_dir} {raw_dir}/*/fastqc_per_sample 2> {log} 1>&2
+        """
+
 rule qc_atropos:
     """
     Does adapter trimming and read QC with Atropos
@@ -110,3 +158,4 @@ rule qc:
     input: 
         expand(rules.qc_filter.output,
                sample=samples),
+        rules.raw_per_sample_multiqc.output

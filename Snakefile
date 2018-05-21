@@ -9,6 +9,7 @@ include: "rules/qc.rule"
 include: "rules/taxonomy.rule"
 include: "rules/function.rule"
 include: "rules/assemble.rule"
+include: "rules/report.rule"
 
 # import rules
 rule all:
