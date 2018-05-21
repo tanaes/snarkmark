@@ -152,12 +152,12 @@ rule taxonomy_centrifuge:
         -2 {input.reverse} \
         -x {params.db} \
         -p {threads} \
-        -S {temp_dir}/map.tmp \
+        -S {params.temp_dir}/map.tmp \
         --report-file {output.profile} \
         2> {log} 1>&2
 
         # generate Kraken-style hierarchical report
-        centrifuge-kreport {temp_dir}/map.tmp \
+        centrifuge-kreport {params.temp_dir}/map.tmp \
         -x {params.db} \
         1> {output.report} \
         2>> {log}
