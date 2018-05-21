@@ -12,3 +12,4 @@ rule all:
     input: 
         rules.qc.input
         rules.taxonomy.input
+        rules.function.input

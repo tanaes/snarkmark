@@ -47,3 +47,16 @@ rule function_humann2:
         scp {temp_dir}/{wildcards.sample}/{wildcards.sample}_pathabundance.tsv {output.pathabundance}
         """
 
+rule humann2:
+    input:
+        genef = lambda wildcards: expand(func_dir + "{sample}/humann2/{sample}_genefamilies.tsv",
+                                         sample=samples),
+        pathc = lambda wildcards: expand(func_dir + "{sample}/humann2/{sample}_pathcoverage.tsv",
+                                         sample=samples),
+        patha = lambda wildcards: expand(func_dir + "{sample}/humann2/{sample}_pathabundance.tsv",
+                                         sample=samples)
+
+
+rule function:
+    input:
+        rules.humann2.input
