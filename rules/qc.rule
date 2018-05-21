@@ -56,8 +56,6 @@ rule raw_per_sample_multiqc:
         raw_dir + "multiQC_per_sample/multiqc_data/multiqc_general_stats.txt"
     threads:
         4
-    benchmark:
-        "benchmarks/qc/raw_per_sample_multiqc.sample_{sample}.txt"
     params:
         out_dir = raw_dir + "multiQC_per_sample"
     log:
