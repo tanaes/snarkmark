@@ -28,6 +28,8 @@ rule function_combine_metaphlan2:
         input_dir = func_dir + "metaphlan2/gathered"
     log:
         func_dir + "logs/function_combine_metaphlan.log"
+    conda:
+        "../envs/env_humann2.yaml"
     shell:
         """
         humann2_join_tables --input {params.input_dir} \
