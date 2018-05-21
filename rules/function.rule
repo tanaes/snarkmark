@@ -20,7 +20,8 @@ rule function_humann2:
                              config['params']['humann2']["aa_db"]),
         other = config['params']['humann2']['other'],
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
-                                                 'tmp_%s' % wildcards.sample)
+                                                 'tmp_%s' % wildcards.sample,
+                                                 'function_humann2')
     threads:
         8
     log:
@@ -31,10 +32,11 @@ rule function_humann2:
         "../envs/env_humann2.yaml"
     shell:
         """
-        zcat {input.forward} {input.reverse} > {temp_dir}/input.fastq
+        mkdir -p {params.temp_dir}
+        zcat {input.forward} {input.reverse} > {params.temp_dir}/input.fastq
 
-        humann2 --input {temp_dir}/input.fastq \
-        --output {temp_dir}/{wildcards.sample} \
+        humann2 --input {params.temp_dir}/input.fastq \
+        --output {params.temp_dir}/{wildcards.sample} \
         --output-basename {wildcards.sample} \
         --nucleotide-database {params.nt_db} \
         --protein-database {params.aa_db} \
@@ -42,9 +44,11 @@ rule function_humann2:
         --threads {threads} \
         {params.other} 2> {log} 1>&2
 
-        scp {temp_dir}/{wildcards.sample}/{wildcards.sample}_genefamilies.tsv {output.genefamilies}
-        scp {temp_dir}/{wildcards.sample}/{wildcards.sample}_pathcoverage.tsv {output.pathcoverage}
-        scp {temp_dir}/{wildcards.sample}/{wildcards.sample}_pathabundance.tsv {output.pathabundance}
+        scp {params.temp_dir}/{wildcards.sample}/{wildcards.sample}_genefamilies.tsv {output.genefamilies}
+        scp {params.temp_dir}/{wildcards.sample}/{wildcards.sample}_pathcoverage.tsv {output.pathcoverage}
+        scp {params.temp_dir}/{wildcards.sample}/{wildcards.sample}_pathabundance.tsv {output.pathabundance}
+        
+        rm -r {params.temp_dir}
         """
 
 rule humann2:

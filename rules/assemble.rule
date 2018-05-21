@@ -11,7 +11,8 @@ rule assemble_megahit:
         mem_b = 120000000000,
         out_dir = assemble_dir + "{sample}/megahit",
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
-                                                 'tmp_%s' % wildcards.sample)
+                                                 'tmp_%s' % wildcards.sample,
+                                                 'assemble_megahit')
     threads:
         12
     log:
@@ -22,12 +23,16 @@ rule assemble_megahit:
         "../envs/env_assemble.yaml"
     shell:
         """
+        mkdir -p {params.temp_dir}
+
         megahit -1 {input.forward} -2 {input.reverse} \
         -m {params.mem_b} -t {threads} -o {params.temp_dir}/megahit \
         --out-prefix {wildcards.sample} \
         2> {log} 1>&2
 
         scp {params.temp_dir}/megahit/{{*.log,*.fa,*.txt}} {params.out_dir}/.
+
+        rm -r {params.temp_dir}
         """
 
 rule assemble_metaspades:
@@ -46,18 +51,21 @@ rule assemble_metaspades:
         mem=240,
         out_dir = assemble_dir + "{sample}/metaspades",
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
-                                                 'tmp_%s' % wildcards.sample)
+                                                 'tmp_%s' % wildcards.sample,
+                                                 'assemble_metaspades')
     threads:
         12
     shell:
         """
-        set +u; {params.env}; set -u
+        mkdir -p {params.temp_dir}
 
         spades.py --meta -t {threads} -m {params.mem} \
         -1 {input.forward} -2 {input.reverse} -o {params.temp_dir} \
         2> {log} 1>&2
 
         scp -r {params.temp_dir}/{{spades.log,*.fasta,assembly_graph*,*.paths}} {params.out_dir}/.
+        
+        rm -r {params.temp_dir}
         """
 
 rule assemble:

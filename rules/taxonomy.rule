@@ -18,7 +18,8 @@ rule taxonomy_metaphlan2:
         db = os.path.join(config['params']['db_dir'],
                           config['params']['metaphlan2']['db']),
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
-                                                 'tmp_%s' % wildcards.sample)
+                                                 'tmp_%s' % wildcards.sample,
+                                                  'taxonomy_metaphlan2')
     threads:
         2
     log:
@@ -69,7 +70,8 @@ rule taxonomy_kraken:
         kmers = config['params']['bracken']['kmers'],
         levels = config['params']['kraken']['levels'],
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
-                                                 'tmp_%s' % wildcards.sample)
+                                                 'tmp_%s' % wildcards.sample,
+                                                 'taxonomy_kraken')
     threads:
         12
     log:
@@ -129,7 +131,8 @@ rule taxonomy_centrifuge:
         kmers = config['params']['bracken']['kmers'],
         levels = config['params']['kraken']['levels'],
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
-                                                 'tmp_%s' % wildcards.sample)
+                                                 'tmp_%s' % wildcards.sample,
+                                                 'taxonomy_centrifuge')
     threads:
         12
     log:
