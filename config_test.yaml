@@ -16,12 +16,12 @@ params:
   atropos: ' -a GATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A GATCGGAAGAGCGTCGTGTAGGGAAAGGAGTGT
     -q 15 --minimum-length 100 --pair-filter any'
   humann2:
-    aa_db: humann2_data/uniref90/uniref
-    nt_db: humann2_data/full_chocophlan.v0.1.1/chocophlan
+    aa_db: uniref50_mini
+    nt_db: chocophlan_test
     other: ''
   maxbin: -plotmarker
   metaphlan2:
-    db: metaphlan2/db_v20/mpa_v20_m200
+    db: mp2_mini/mp2_mini
     # taxon name to TaxID dictionary
     name2tid: 
     levels: phylum,genus,species
