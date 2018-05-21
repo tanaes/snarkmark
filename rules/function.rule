@@ -18,6 +18,8 @@ rule function_humann2:
                             config['params']['humann2']["nt_db"]),
         aa_db = os.path.join(config['params']['db_dir'],
                              config['params']['humann2']["aa_db"]),
+        mp2 = os.path.join(config['params']['db_dir'],
+                          config['params']['metaphlan2']['db']),
         other = config['params']['humann2']['other'],
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
                                                  'tmp_%s' % wildcards.sample,
@@ -40,6 +42,7 @@ rule function_humann2:
         --output-basename {wildcards.sample} \
         --nucleotide-database {params.nt_db} \
         --protein-database {params.aa_db} \
+        --metaphlan-options "--mpa_pkl {params.mp2}.pkl --bowtie2db {params.mp2}" \
         --o-log {log} \
         --threads {threads} \
         {params.other} 2> {log} 1>&2
