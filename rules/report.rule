@@ -90,7 +90,7 @@ def load_benchmarks(benchmark_fps, multiqc, cluster_json):
     benchmark_df = benchmark_df.reset_index(drop=True)
 
     # add primary sample seq # from multiqc df
-    benchmark_df['sample_seqs'] = multiqc.loc[benchmark_df['sample'],'FastQC_total_sequences'].values
+    benchmark_df['sample_seqs'] = multiqc.loc[benchmark_df['sample'],'FastQC_mqc-generalstats-total_sequences'].values
 
     # remove non-numeric and redundant h:m:s
     benchmark_df.drop('h:m:s', axis=1, inplace=True)
