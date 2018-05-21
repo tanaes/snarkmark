@@ -1,6 +1,6 @@
-tmp_dir_root: /Users/jonsanders/Development/git_sw/snarkmark
+tmp_dir_root: /panfs/panfs1.ucsd.edu/panscratch/jgsanders
 params:
-  db_dir: /Users/jonsanders/Development/git_sw/snarkmark/test_data/test_dbs
+  db_dir: /databases/
   abundance_samples:
   assemblers:
   - megahit
@@ -8,7 +8,7 @@ params:
   binning_samples:
   mapping_assembler:
   - metaspades
-  filter_db: bowtie2/phix
+  filter_db: bowtie/mouse/mouse
   trimmer: atropos
   anvio:
     centrifuge_base: /home/jgsanders/miniconda/envs/anvio2/centrifuge
@@ -58,9 +58,150 @@ params:
     scaled: 10000
     kmer: 31
 samples:
-  sample_S22205:
-    forward: test_data/test_reads/S22205_S104_L001_R1_001.fastq.gz
-    reverse: test_data/test_reads/S22205_S104_L001_R2_001.fastq.gz
-  sample_S22282:
-    forward: test_data/test_reads/S22282_S102_L001_R1_001.fastq.gz
-    reverse: test_data/test_reads/S22282_S102_L001_R2_001.fastq.gz
+  Berry2_sediment_Un51:
+    forward: samples/Berry2_sediment_Un51_S629_L001_R1_001.fastq.gz
+    reverse: samples/Berry2_sediment_Un51_S629_L001_R2_001.fastq.gz
+  Bittleston68_Namp1:
+    forward: samples/Bittleston68_Namp1_S321_L001_R1_001.fastq.gz
+    reverse: samples/Bittleston68_Namp1_S321_L001_R2_001.fastq.gz
+  Bowen74_sed1:
+    forward: samples/Bowen74_sed1_S65_L001_R1_001.fastq.gz
+    reverse: samples/Bowen74_sed1_S65_L001_R2_001.fastq.gz
+  Distel72_BS_1_Gill:
+    forward: samples/Distel72_BS_1_Gill_S286_L001_R1_001.fastq.gz
+    reverse: samples/Distel72_BS_1_Gill_S286_L001_R2_001.fastq.gz
+  Distel72_BS_Frass_1:
+    forward: samples/Distel72_BS_Frass_1_S283_L001_R1_001.fastq.gz
+    reverse: samples/Distel72_BS_Frass_1_S283_L001_R2_001.fastq.gz
+  Girguis50_FinBP3:
+    forward: samples/Girguis50_FinBP3_S379_L001_R1_001.fastq.gz
+    reverse: samples/Girguis50_FinBP3_S379_L001_R2_001.fastq.gz
+  Girguis50_FinBP4:
+    forward: samples/Girguis50_FinBP4_S52_L001_R1_001.fastq.gz
+    reverse: samples/Girguis50_FinBP4_S52_L001_R2_001.fastq.gz
+  Girguis50_HumpbackAK3:
+    forward: samples/Girguis50_HumpbackAK3_S220_L001_R1_001.fastq.gz
+    reverse: samples/Girguis50_HumpbackAK3_S220_L001_R2_001.fastq.gz
+  Makhalanyane46_TGP13:
+    forward: samples/Makhalanyane46_TGP13_S390_L001_R1_001.fastq.gz
+    reverse: samples/Makhalanyane46_TGP13_S390_L001_R2_001.fastq.gz
+  Mayer33_sediment_5:
+    forward: samples/Mayer33_sediment_5_S411_L001_R1_001.fastq.gz
+    reverse: samples/Mayer33_sediment_5_S411_L001_R2_001.fastq.gz
+  Mousseau88_FIN_106:
+    forward: samples/Mousseau88_FIN_106_S646_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_FIN_106_S646_L001_R2_001.fastq.gz
+  Mousseau88_FIN_143:
+    forward: samples/Mousseau88_FIN_143_S661_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_FIN_143_S661_L001_R2_001.fastq.gz
+  Mousseau88_FIN_145:
+    forward: samples/Mousseau88_FIN_145_S657_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_FIN_145_S657_L001_R2_001.fastq.gz
+  Mousseau88_FIN_365:
+    forward: samples/Mousseau88_FIN_365_S589_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_FIN_365_S589_L001_R2_001.fastq.gz
+  Mousseau88_FIN_99:
+    forward: samples/Mousseau88_FIN_99_S621_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_FIN_99_S621_L001_R2_001.fastq.gz
+  Mousseau88_FIN_K18:
+    forward: samples/Mousseau88_FIN_K18_S533_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_FIN_K18_S533_L001_R2_001.fastq.gz
+  Mousseau88_FIN_K7:
+    forward: samples/Mousseau88_FIN_K7_S281_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_FIN_K7_S281_L001_R2_001.fastq.gz
+  Mousseau88_USC_541:
+    forward: samples/Mousseau88_USC_541_S269_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_USC_541_S269_L001_R2_001.fastq.gz
+  Mousseau88_USC_553:
+    forward: samples/Mousseau88_USC_553_S389_L001_R1_001.fastq.gz
+    reverse: samples/Mousseau88_USC_553_S389_L001_R2_001.fastq.gz
+  Myrold59_soil_16_NRCS0371:
+    forward: samples/Myrold59_soil_16_NRCS0371_S738_L001_R1_001.fastq.gz
+    reverse: samples/Myrold59_soil_16_NRCS0371_S738_L001_R2_001.fastq.gz
+  Myrold59_soil_6_NRCS0166:
+    forward: samples/Myrold59_soil_6_NRCS0166_S534_L001_R1_001.fastq.gz
+    reverse: samples/Myrold59_soil_6_NRCS0166_S534_L001_R2_001.fastq.gz
+  Palenik42_Seawater_13:
+    forward: samples/Palenik42_Seawater_13_S193_L001_R1_001.fastq.gz
+    reverse: samples/Palenik42_Seawater_13_S193_L001_R2_001.fastq.gz
+  Palenik42_Seawater_8:
+    forward: samples/Palenik42_Seawater_8_S541_L001_R1_001.fastq.gz
+    reverse: samples/Palenik42_Seawater_8_S541_L001_R2_001.fastq.gz
+  Palenik42_Seawater_9:
+    forward: samples/Palenik42_Seawater_9_S430_L001_R1_001.fastq.gz
+    reverse: samples/Palenik42_Seawater_9_S430_L001_R2_001.fastq.gz
+  Pinto63_gardenbotton_4:
+    forward: samples/Pinto63_gardenbotton_4_S303_L001_R1_001.fastq.gz
+    reverse: samples/Pinto63_gardenbotton_4_S303_L001_R2_001.fastq.gz
+  Rohwer85_deep_sediment_AP3:
+    forward: samples/Rohwer85_deep_sediment_AP3_S297_L001_R1_001.fastq.gz
+    reverse: samples/Rohwer85_deep_sediment_AP3_S297_L001_R2_001.fastq.gz
+  RoyChowdhury45_soil_15_SO2_s1:
+    forward: samples/RoyChowdhury45_soil_15_SO2_s1_S678_L001_R1_001.fastq.gz
+    reverse: samples/RoyChowdhury45_soil_15_SO2_s1_S678_L001_R2_001.fastq.gz
+  RoyChowdhury45_soil_21_SO4_1:
+    forward: samples/RoyChowdhury45_soil_21_SO4_1_S489_L001_R1_001.fastq.gz
+    reverse: samples/RoyChowdhury45_soil_21_SO4_1_S489_L001_R2_001.fastq.gz
+  RoyChowdhury45_soil_23_SO4_9:
+    forward: samples/RoyChowdhury45_soil_23_SO4_9_S761_L001_R1_001.fastq.gz
+    reverse: samples/RoyChowdhury45_soil_23_SO4_9_S761_L001_R2_001.fastq.gz
+  Sandin54_Blanton_host_associated_11:
+    forward: samples/Sandin54_Blanton_host_associated_11_S148_L001_R1_001.fastq.gz
+    reverse: samples/Sandin54_Blanton_host_associated_11_S148_L001_R2_001.fastq.gz
+  Sandin54_Blanton_host_associated_7:
+    forward: samples/Sandin54_Blanton_host_associated_7_S84_L001_R1_001.fastq.gz
+    reverse: samples/Sandin54_Blanton_host_associated_7_S84_L001_R2_001.fastq.gz
+  Shade23_Cen15_12102015:
+    forward: samples/Shade23_Cen15_12102015_S511_L001_R1_001.fastq.gz
+    reverse: samples/Shade23_Cen15_12102015_S511_L001_R2_001.fastq.gz
+  Shade23_Cen17_12102015:
+    forward: samples/Shade23_Cen17_12102015_S455_L001_R1_001.fastq.gz
+    reverse: samples/Shade23_Cen17_12102015_S455_L001_R2_001.fastq.gz
+  Shade23_Cen19_12102015:
+    forward: samples/Shade23_Cen19_12102015_S668_L001_R1_001.fastq.gz
+    reverse: samples/Shade23_Cen19_12102015_S668_L001_R2_001.fastq.gz
+  Song53_24100:
+    forward: samples/Song53_24100_S271_L001_R1_001.fastq.gz
+    reverse: samples/Song53_24100_S271_L001_R2_001.fastq.gz
+  Song75_24535:
+    forward: samples/Song75_24535_S327_L001_R1_001.fastq.gz
+    reverse: samples/Song75_24535_S327_L001_R2_001.fastq.gz
+  Stegen38_activelayer_soil_T5_20m:
+    forward: samples/Stegen38_activelayer_soil_T5_20m_S754_L001_R1_001.fastq.gz
+    reverse: samples/Stegen38_activelayer_soil_T5_20m_S754_L001_R2_001.fastq.gz
+  Stegen38_activelayer_soil_T5_52m:
+    forward: samples/Stegen38_activelayer_soil_T5_52m_S525_L001_R1_001.fastq.gz
+    reverse: samples/Stegen38_activelayer_soil_T5_52m_S525_L001_R2_001.fastq.gz
+  Stegen38_activelayer_soil_T5_60m:
+    forward: samples/Stegen38_activelayer_soil_T5_60m_S672_L001_R1_001.fastq.gz
+    reverse: samples/Stegen38_activelayer_soil_T5_60m_S672_L001_R2_001.fastq.gz
+  Stegen38_activelayer_soil_T6_40m:
+    forward: samples/Stegen38_activelayer_soil_T6_40m_S700_L001_R1_001.fastq.gz
+    reverse: samples/Stegen38_activelayer_soil_T6_40m_S700_L001_R2_001.fastq.gz
+  Stegen38_activelayer_soil_T7_12m:
+    forward: samples/Stegen38_activelayer_soil_T7_12m_S540_L001_R1_001.fastq.gz
+    reverse: samples/Stegen38_activelayer_soil_T7_12m_S540_L001_R2_001.fastq.gz
+  Stewart26_NH1410_water_6:
+    forward: samples/Stewart26_NH1410_water_6_S167_L001_R1_001.fastq.gz
+    reverse: samples/Stewart26_NH1410_water_6_S167_L001_R2_001.fastq.gz
+  Thomas18_CAR2bac:
+    forward: samples/Thomas18_CAR2bac_S591_L001_R1_001.fastq.gz
+    reverse: samples/Thomas18_CAR2bac_S591_L001_R2_001.fastq.gz
+  Thomas18_CLI1bac:
+    forward: samples/Thomas18_CLI1bac_S484_L001_R1_001.fastq.gz
+    reverse: samples/Thomas18_CLI1bac_S484_L001_R2_001.fastq.gz
+  Thomas18_IRC1tis:
+    forward: samples/Thomas18_IRC1tis_S608_L001_R1_001.fastq.gz
+    reverse: samples/Thomas18_IRC1tis_S608_L001_R2_001.fastq.gz
+  Tucker58_DOE_water_BW3:
+    forward: samples/Tucker58_DOE_water_BW3_S298_L001_R1_001.fastq.gz
+    reverse: samples/Tucker58_DOE_water_BW3_S298_L001_R2_001.fastq.gz
+  Tucker58_DOE_water_SIU12:
+    forward: samples/Tucker58_DOE_water_SIU12_S90_L001_R1_001.fastq.gz
+    reverse: samples/Tucker58_DOE_water_SIU12_S90_L001_R2_001.fastq.gz
+  Uren82_plant_associated_1:
+    forward: samples/Uren82_plant_associated_1_S22_L001_R1_001.fastq.gz
+    reverse: samples/Uren82_plant_associated_1_S22_L001_R2_001.fastq.gz
+  Uren82_plant_associated_7:
+    forward: samples/Uren82_plant_associated_7_S225_L001_R1_001.fastq.gz
+    reverse: samples/Uren82_plant_associated_7_S225_L001_R2_001.fastq.gz
