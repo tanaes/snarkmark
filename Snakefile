@@ -15,7 +15,7 @@ include: "rules/report.rule"
 rule all:
     input: 
         rules.processing.input,
-        rules.report.input
+        rules.report_benchmark_summary.output
 
 rule processing:
     input:
@@ -23,7 +23,3 @@ rule processing:
         rules.taxonomy.input,
         rules.function.input,
         rules.assemble.input
-
-rule report:
-    input:
-        rules.report_benchmark_summary.output
