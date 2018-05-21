@@ -74,7 +74,8 @@ rule qc_filter:
         filter_db = os.path.join(config['params']['db_dir'],
                                  config['params']['filter_db']),
         temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
-                                                 'tmp_%s' % wildcards.sample)
+                                                 'tmp_%s' % wildcards.sample,
+                                                 'qc_filter')
     threads:
         4
     log:
