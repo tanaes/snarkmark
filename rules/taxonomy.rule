@@ -1,0 +1,166 @@
+
+rule taxonomy_metaphlan2:
+    """
+    Runs MetaPhlan2 on a set of samples to create a joint taxonomic profile for
+    input into HUMAnN2, based on the thinking that it is preferable to have a
+    consistent Chocophlan reference database for the whole set of samples. This
+    is especially true for shallowly sequenced samples.
+
+    Going to do just R1 reads for now. Because of how I've split PE vs SE
+    processing and naming, still will need to make a separate rule for PE.
+    """
+    input:
+        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
+        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+    output:
+        profile = taxonomy_dir + "{sample}/metaphlan2/{sample}.profile.txt"
+    params:
+        db = os.path.join(config['params']['db_dir'],
+                          config['params']['metaphlan2']['db']),
+        temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
+                                                 'tmp_%s' % wildcards.sample)
+    threads:
+        2
+    log:
+        taxonomy_dir + "logs/taxonomy_metaphlan2.sample_{sample}.log"
+    benchmark:
+        "benchmarks/taxonomy/taxonomy_metaphlan2.sample_{sample}.txt"
+    conda:
+        "../envs/env_metaphlan2.yaml"
+    shell:
+        """
+        mkdir -p {params.temp_dir}
+
+        # get stem file path
+        stem={output.profile}
+        stem=${{stem%.profile.txt}}
+
+        # merge input files
+        zcat {input.forward} {input.reverse} > {params.temp_dir}/input.fastq
+
+        # run MetaPhlAn2 to generate taxonomic profile
+        metaphlan2.py {params.temp_dir}/input.fastq \
+        --input_type fastq \
+        --mpa_pkl {params.db}.pkl \
+        --bowtie2db {params.db} \
+        --nproc {threads} \
+        --tmp_dir {params.temp_dir} \
+        --bowtie2out {params.temp_dir}/map.tmp \
+        -o {output.profile} \
+        2> {log} 1>&2
+
+        rm -r {params.temp_dir}
+        """
+
+
+rule taxonomy_kraken:
+    """
+    Runs Kraken with Bracken to construct taxonomic profiles.
+    """
+    input:
+        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
+        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+    output:
+        report = taxonomy_dir + "{sample}/kraken/{sample}.report.txt",
+        profile = taxonomy_dir + "{sample}/kraken/{sample}.profile.txt"
+    params:
+        db = os.path.join(config['params']['db_dir'],
+                         config['params']['kraken']['db']),
+        kmers = config['params']['bracken']['kmers'],
+        levels = config['params']['kraken']['levels'],
+        temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
+                                                 'tmp_%s' % wildcards.sample)
+    threads:
+        12
+    log:
+        taxonomy_dir + "logs/taxonomy_kraken.sample_{sample}.log"
+    benchmark:
+        "benchmarks/taxonomy/taxonomy_kraken.sample_{sample}.txt"
+    conda:
+        "../envs/env_taxonomy.yaml"
+    shell: 
+        """
+        mkdir -p {params.temp_dir}
+
+        # get stem file path
+        stem={output.report}
+        stem=${{stem%.report.txt}}
+
+        # run Kraken to align reads against reference genomes
+        kraken {input.forward} {input.reverse} \
+        --db {params.db} \
+        --paired \
+        --fastq-input \
+        --gzip-compressed \
+        --only-classified-output \
+        --threads {threads} \
+        1> {params.temp_dir}/map.tmp \
+        2> {log}
+
+        # generate hierarchical report
+        kraken-report {params.temp_dir}/map.tmp \
+        --db {params.db} \
+        1> {output.report} \
+        2>> {log}
+
+        # generate lineage to count table
+        kraken-mpa-report {params.temp_dir}/map.tmp \
+        --db {params.db} \
+        1> {output.profile} \
+        2>> {log}
+
+        rm -r {params.temp_dir}
+        """
+
+
+rule taxonomy_centrifuge:
+    """
+    Runs Centrifuge with Bracken to construct taxonomic profiles.
+    """
+    input:
+        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
+        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+    output:
+        report = taxonomy_dir + "{sample}/centrifuge/{sample}.report.txt",
+        profile = taxonomy_dir + "{sample}/centrifuge/{sample}.profile.txt"
+    params:
+        db = os.path.join(config['params']['db_dir'],
+                         config['params']['kraken']['db']),
+        kmers = config['params']['bracken']['kmers'],
+        levels = config['params']['kraken']['levels'],
+        temp_dir = lambda wildcards: os.path.join(config['tmp_dir_root'],
+                                                 'tmp_%s' % wildcards.sample)
+    threads:
+        12
+    log:
+        taxonomy_dir + "logs/taxonomy_centrifuge.sample_{sample}.log"
+    benchmark:
+        "benchmarks/taxonomy/taxonomy_centrifuge.sample_{sample}.txt"
+    conda:
+        "../envs/env_taxonomy.yaml"
+    shell:
+        """
+        mkdir -p {params.temp_dir}
+
+        # get stem file path
+        stem={output.report}
+        stem=${{stem%.report.txt}}
+
+        # run Centrifuge to align reads against reference genomes
+        centrifuge \
+        -1 {input.forward} \
+        -2 {input.reverse} \
+        -x {params.db} \
+        -p {threads} \
+        -S {temp_dir}/map.tmp \
+        --report-file {output.profile} \
+        2> {log} 1>&2
+
+        # generate Kraken-style hierarchical report
+        centrifuge-kreport {temp_dir}/map.tmp \
+        -x {params.db} \
+        1> {output.report} \
+        2>> {log}
+
+        rm -r {params.temp_dir}
+        """
