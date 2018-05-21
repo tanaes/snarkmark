@@ -5,7 +5,7 @@ channels:
   - conda-forge
 dependencies:
   - python=2
-  - metaphlan2
+  - metaphlan2==2.6.0
   - glpk==4.65
-  - humann2
+  - humann2==0.11.1
   - biom-format

@@ -29,7 +29,7 @@ params:
   kraken:
     db: kraken
     # Bracken kmer distribution file
-    kmers: genome/rep82/bracken/75mers_distr.txt
+    kmers: bracken/75mers_distr.txt
     # taxonomic ranks (kingdom to species) to reestimate abundance using Bracken
     levels: phylum,genus,species
     # whether to keep original mapping file
