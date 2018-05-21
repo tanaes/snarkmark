@@ -26,7 +26,7 @@ rule taxonomy_metaphlan2:
     benchmark:
         "benchmarks/taxonomy/taxonomy_metaphlan2.sample_{sample}.txt"
     conda:
-        "../envs/env_metaphlan2.yaml"
+        "../envs/env_humann2.yaml"
     shell:
         """
         mkdir -p {params.temp_dir}

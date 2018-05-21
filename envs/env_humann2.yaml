@@ -1,0 +1,11 @@
+channels:
+  - bioconda
+  - anaconda
+  - biocore
+  - conda-forge
+dependencies:
+  - python=2
+  - metaphlan2
+  - glpk==4.65
+  - humann2
+  - biom-format
