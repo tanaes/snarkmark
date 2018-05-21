@@ -8,7 +8,8 @@ rule function_humann2:
     """
     input:
         forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz",
+        metaphlan_in = func_dir + "metaphlan2/joined_taxonomic_profile_max.tsv"
     output:
         genefamilies = func_dir + "{sample}/humann2/{sample}_genefamilies.tsv",
         pathcoverage = func_dir + "{sample}/humann2/{sample}_pathcoverage.tsv",
@@ -42,7 +43,7 @@ rule function_humann2:
         --output-basename {wildcards.sample} \
         --nucleotide-database {params.nt_db} \
         --protein-database {params.aa_db} \
-        --metaphlan-options "--mpa_pkl {params.mp2}.pkl --bowtie2db {params.mp2}" \
+        --taxonomic-profile {input.metaphlan_in} \
         --o-log {log} \
         --threads {threads} \
         {params.other} 2> {log} 1>&2
