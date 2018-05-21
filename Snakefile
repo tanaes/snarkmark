@@ -14,7 +14,16 @@ include: "rules/report.rule"
 # import rules
 rule all:
     input: 
+        rules.processing.input,
+        rules.report.input
+
+rule processing:
+    input:
         rules.qc.input,
         rules.taxonomy.input,
         rules.function.input,
         rules.assemble.input
+
+rule report:
+    input:
+        rules.report_benchmark_summary.output
