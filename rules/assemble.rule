@@ -3,10 +3,10 @@ rule assemble_megahit:
     Run Megahit assembly on fastq
     """
     input:
-        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+        forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
+        reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz"
     output:
-        assemble_dir + "{sample}/megahit/{sample}.contigs.fa"
+        touch(assemble_dir + "{sample}/megahit.done")
     params:
         mem_b = 120000000000,
         out_dir = assemble_dir + "{sample}/megahit",
@@ -30,17 +30,15 @@ rule assemble_megahit:
         --out-prefix {wildcards.sample} \
         2> {log} 1>&2
 
-        scp {params.temp_dir}/megahit/{{*.log,*.fa,*.txt}} {params.out_dir}/.
-
         rm -r {params.temp_dir}
         """
 
 rule assemble_metaspades:
     input:
-        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+        forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
+        reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz"
     output:
-        assemble_dir + "{sample}/metaspades/contigs.fasta"
+        touch(assemble_dir + "{sample}/metaspades.done")
     log:
         assemble_dir + "logs/assemble_metaspades.sample_{sample}.log"
     benchmark:
@@ -63,8 +61,6 @@ rule assemble_metaspades:
         -1 {input.forward} -2 {input.reverse} -o {params.temp_dir} \
         2> {log} 1>&2
 
-        scp -r {params.temp_dir}/{{spades.log,*.fasta,assembly_graph*,*.paths}} {params.out_dir}/.
-        
         rm -r {params.temp_dir}
         """
 

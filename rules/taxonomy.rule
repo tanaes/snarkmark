@@ -10,8 +10,8 @@ rule taxonomy_metaphlan2:
     processing and naming, still will need to make a separate rule for PE.
     """
     input:
-        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+        forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
+        reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz"
     output:
         profile = taxonomy_dir + "{sample}/metaphlan2/{sample}.profile.txt"
     params:
@@ -58,11 +58,10 @@ rule taxonomy_kraken:
     Runs Kraken with Bracken to construct taxonomic profiles.
     """
     input:
-        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+        forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
+        reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz"
     output:
-        report = taxonomy_dir + "{sample}/kraken/{sample}.report.txt",
-        profile = taxonomy_dir + "{sample}/kraken/{sample}.profile.txt"
+        touch(taxonomy_dir + "{sample}/kraken.done")
     params:
         db = os.path.join(config['params']['db_dir'],
                          config['params']['kraken']['db']),
@@ -83,10 +82,6 @@ rule taxonomy_kraken:
         """
         mkdir -p {params.temp_dir}
 
-        # get stem file path
-        stem={output.report}
-        stem=${{stem%.report.txt}}
-
         # run Kraken to align reads against reference genomes
         kraken {input.forward} {input.reverse} \
         --db {params.db} \
@@ -101,13 +96,13 @@ rule taxonomy_kraken:
         # generate hierarchical report
         kraken-report {params.temp_dir}/map.tmp \
         --db {params.db} \
-        1> {output.report} \
+        1> {params.temp_dir}/report.txt \
         2>> {log}
 
         # generate lineage to count table
         kraken-mpa-report {params.temp_dir}/map.tmp \
         --db {params.db} \
-        1> {output.profile} \
+        1> {params.temp_dir}/profile.txt \
         2>> {log}
 
         rm -r {params.temp_dir}
@@ -119,11 +114,10 @@ rule taxonomy_centrifuge:
     Runs Centrifuge with Bracken to construct taxonomic profiles.
     """
     input:
-        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+        forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
+        reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz"
     output:
-        report = taxonomy_dir + "{sample}/centrifuge/{sample}.report.txt",
-        profile = taxonomy_dir + "{sample}/centrifuge/{sample}.profile.txt"
+        touch(taxonomy_dir + "{sample}/centrifuge.done")
     params:
         db = os.path.join(config['params']['db_dir'],
                          config['params']['centrifuge']['db']),
@@ -144,10 +138,6 @@ rule taxonomy_centrifuge:
         """
         mkdir -p {params.temp_dir}
 
-        # get stem file path
-        stem={output.report}
-        stem=${{stem%.report.txt}}
-
         # run Centrifuge to align reads against reference genomes
         centrifuge \
         -1 {input.forward} \
@@ -155,13 +145,13 @@ rule taxonomy_centrifuge:
         -x {params.db} \
         -p {threads} \
         -S {params.temp_dir}/map.tmp \
-        --report-file {output.profile} \
+        --report-file {params.temp_dir}/profile.txt \
         2> {log} 1>&2
 
         # generate Kraken-style hierarchical report
         centrifuge-kreport {params.temp_dir}/map.tmp \
         -x {params.db} \
-        1> {output.report} \
+        1> {params.temp_dir}/report.txt \
         2>> {log}
 
         rm -r {params.temp_dir}
@@ -169,9 +159,9 @@ rule taxonomy_centrifuge:
 
 rule taxonomy:
     input:
-        expand(taxonomy_dir + "{sample}/centrifuge/{sample}.report.txt",
+        expand(rules.taxonomy_kraken.output,
                sample=samples),
-        expand(taxonomy_dir + "{sample}/kraken/{sample}.profile.txt",
+        expand(rules.taxonomy_centrifuge.output,
                sample=samples),
         expand(taxonomy_dir + "{sample}/metaphlan2/{sample}.profile.txt",
                sample=samples)

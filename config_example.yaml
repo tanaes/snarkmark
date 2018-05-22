@@ -1,4 +1,4 @@
-tmp_dir_root: /panfs/panfs1.ucsd.edu/panscratch/jgsanders
+tmp_dir_root: results/temp
 params:
   db_dir: /databases/
   abundance_samples:

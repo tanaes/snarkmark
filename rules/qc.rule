@@ -78,7 +78,7 @@ rule qc_atropos:
         forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
         reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz"
     threads:
-        8
+        4
     params:
         atropos = config['params']['atropos']
     log:
@@ -114,8 +114,7 @@ rule qc_filter:
         forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
         reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz"
     output:
-        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz"
+        touch(qc_dir + "{sample}/filtered.done")
     params:
         filter_db = os.path.join(config['params']['db_dir'],
                                  config['params']['filter_db']),
@@ -123,7 +122,7 @@ rule qc_filter:
                                                  'tmp_%s' % wildcards.sample,
                                                  'qc_filter')
     threads:
-        4
+        8
     log:
         bowtie = qc_dir + "logs/qc_filter.bowtie.sample_{sample}.log",
         other = qc_dir + "logs/qc_filter.other.sample_{sample}.log"
@@ -143,12 +142,6 @@ rule qc_filter:
 
         bedtools bamtofastq -i {params.temp_dir}/{wildcards.sample}.bam -fq {params.temp_dir}/{wildcards.sample}.R1.trimmed.filtered.fastq -fq2 {params.temp_dir}/{wildcards.sample}.R2.trimmed.filtered.fastq 2> {log.other}
 
-        pigz -p {threads} -c {params.temp_dir}/{wildcards.sample}.R1.trimmed.filtered.fastq > {params.temp_dir}/{wildcards.sample}.R1.trimmed.filtered.fastq.gz
-        pigz -p {threads} -c {params.temp_dir}/{wildcards.sample}.R2.trimmed.filtered.fastq > {params.temp_dir}/{wildcards.sample}.R2.trimmed.filtered.fastq.gz
-
-        cp {params.temp_dir}/{wildcards.sample}.R1.trimmed.filtered.fastq.gz {output.forward}
-        cp {params.temp_dir}/{wildcards.sample}.R2.trimmed.filtered.fastq.gz {output.reverse} 
-        
         rm -r {params.temp_dir}
         """
 

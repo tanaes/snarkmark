@@ -13,12 +13,12 @@
     },
     "qc_atropos": {
         "time"      : "4:00:00",
-        "n"         : 8,
+        "n"         : 4,
         "mem"       : 8
     },
     "qc_filter": {
         "time"      : "4:00:00",
-        "n"         : 4,
+        "n"         : 8,
         "mem"       : 8
     },
     "assemble_megahit": {

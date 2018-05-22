@@ -50,13 +50,11 @@ rule function_humann2:
     params: humann2: other.
     """
     input:
-        forward = qc_dir + "{sample}/filtered/{sample}.R1.trimmed.filtered.fastq.gz",
-        reverse = qc_dir + "{sample}/filtered/{sample}.R2.trimmed.filtered.fastq.gz",
+        forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
+        reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz",
         metaphlan_in = func_dir + "metaphlan2/joined_taxonomic_profile_max.tsv"
     output:
-        genefamilies = func_dir + "{sample}/humann2/{sample}_genefamilies.tsv",
-        pathcoverage = func_dir + "{sample}/humann2/{sample}_pathcoverage.tsv",
-        pathabundance = func_dir + "{sample}/humann2/{sample}_pathabundance.tsv"
+        touch(func_dir + "{sample}/humann2.done")
     params:
         nt_db = os.path.join(config['params']['db_dir'],
                             config['params']['humann2']["nt_db"]),
@@ -91,21 +89,13 @@ rule function_humann2:
         --threads {threads} \
         {params.other} 2> {log} 1>&2
 
-        scp {params.temp_dir}/{wildcards.sample}/{wildcards.sample}_genefamilies.tsv {output.genefamilies}
-        scp {params.temp_dir}/{wildcards.sample}/{wildcards.sample}_pathcoverage.tsv {output.pathcoverage}
-        scp {params.temp_dir}/{wildcards.sample}/{wildcards.sample}_pathabundance.tsv {output.pathabundance}
-        
         rm -r {params.temp_dir}
         """
 
 rule humann2:
     input:
-        genef = lambda wildcards: expand(func_dir + "{sample}/humann2/{sample}_genefamilies.tsv",
-                                         sample=samples),
-        pathc = lambda wildcards: expand(func_dir + "{sample}/humann2/{sample}_pathcoverage.tsv",
-                                         sample=samples),
-        patha = lambda wildcards: expand(func_dir + "{sample}/humann2/{sample}_pathabundance.tsv",
-                                         sample=samples)
+        lambda wildcards: expand(rules.function_humann2.output,
+                                 sample=samples)
 
 
 rule function:
