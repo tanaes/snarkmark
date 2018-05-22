@@ -18,9 +18,11 @@ rule processing:
         rules.taxonomy.input,
         rules.function.input,
         rules.assemble.input
+    output:
+        touch("processing.done")
 
 rule all:
     input:
-        rules.processing.input,
+        rules.processing.output,
         rules.report_benchmark_summary.output
 
