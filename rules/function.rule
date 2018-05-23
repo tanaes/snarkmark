@@ -27,7 +27,7 @@ rule function_humann2:
     log:
         func_dir + "logs/function_humann2.sample_{sample}.log"
     benchmark:
-        "benchmarks/function/function_humann2.sample_{sample}.json"
+        "benchmarks/function/function_humann2.sample_{sample}.txt"
     conda:
         "../envs/env_humann2.yaml"
     shell:
