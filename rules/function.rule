@@ -1,47 +1,3 @@
-rule function_gather_metaphlan2:
-    input:
-        expand(taxonomy_dir + "{sample}/metaphlan2/{sample}.profile.txt",
-               sample=samples)
-    output:
-        touch(func_dir + "metaphlan2/gathered.done")
-    threads:
-        1
-    params:
-        out_dir = func_dir + "metaphlan2/gathered"
-    run:
-        os.makedirs(params.out_dir)
-        for file in input:
-            shell("cp {0} {1}/.".format(file, params.out_dir))
-
-rule function_combine_metaphlan2:
-    """
-    Combines MetaPhlAn2 output for unified taxonomic profile for HUMAnN2.
-    """
-    input:
-        rules.function_gather_metaphlan2.output
-    output:
-        joint_prof = func_dir + "metaphlan2/joined_taxonomic_profile.tsv",
-        max_prof = func_dir + "metaphlan2/joined_taxonomic_profile_max.tsv"
-    threads:
-        1
-    params:
-        input_dir = func_dir + "metaphlan2/gathered"
-    log:
-        func_dir + "logs/function_combine_metaphlan.log"
-    conda:
-        "../envs/env_humann2.yaml"
-    shell:
-        """
-        humann2_join_tables --input {params.input_dir} \
-        --output {output.joint_prof} 2> {log} 1>&2
-
-        humann2_reduce_table --input {output.joint_prof} \
-        --output {output.max_prof} --function max \
-        --sort-by level 2>> {log} 1>&2
-
-        rm -r {params.input_dir}
-        """
-
 rule function_humann2:
     """
     Runs HUMAnN2 pipeline using general defaults.
@@ -52,7 +8,7 @@ rule function_humann2:
     input:
         forward = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R1.fastq.gz",
         reverse = qc_dir + "{sample}/atropos_trimmed/{sample}.trimmed.R2.fastq.gz",
-        metaphlan_in = func_dir + "metaphlan2/joined_taxonomic_profile_max.tsv"
+        metaphlan_in = taxonomy_dir + "{sample}/metaphlan2/{sample}.profile.txt"
     output:
         touch(func_dir + "{sample}/humann2.done")
     params:
