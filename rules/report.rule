@@ -89,8 +89,18 @@ def load_benchmarks(benchmark_fps, multiqc, cluster_json):
     benchmark_df = pd.concat(benchmark_results)
     benchmark_df = benchmark_df.reset_index(drop=True)
 
+    seqcol = None
+    # get name of sequence count column
+    for x in multiqc.columns:
+        if x.endswith('total_sequences'):
+            seqcol = x
+
+    if seqcol == None:
+        raise ValueError("Can't find total_sequences column")
+
     # add primary sample seq # from multiqc df
-    benchmark_df['sample_seqs'] = multiqc.loc[benchmark_df['sample'],'FastQC_mqc-generalstats-total_sequences'].values
+    benchmark_df['sample_seqs'] = multiqc.loc[benchmark_df['sample'],
+                                              seqcol].values
 
     # remove non-numeric and redundant h:m:s
     benchmark_df.drop('h:m:s', axis=1, inplace=True)
