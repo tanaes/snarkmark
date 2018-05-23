@@ -3,6 +3,7 @@ import os
 import re
 import yaml
 import shutil
+from collections import OrderedDict
 
 indir = '/projects/emp500/public/shotgun/raw/180404_A00169_0085_AH7CV2DMXX'
 outdir = 'samples'
@@ -10,7 +11,7 @@ outfile = 'samples.yaml'
 
 file = 'emp500_samples.txt'
 
-sample_dict = {}
+sample_dict =  OrderedDict()
 
 os.makedirs(outdir)
 
