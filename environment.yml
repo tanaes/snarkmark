@@ -4,10 +4,11 @@ channels:
   - conda-forge
 dependencies:
   - python>=3.5
-  - snakemake>=5.0
+  - snakemake==5.0.0
   - matplotlib
   - pandas
   - numpy
   - seaborn
   - biom-format==2.1.6
   - scikit-bio==0.5.1
+  - docutils
